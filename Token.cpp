@@ -1,22 +1,34 @@
 #include "Token.hpp"
 #include <iostream>
 
+// parent class
+std::string Token::getValue()
+{
+    return value;
+}
+
+TOKEN_TYPE Token::getType()
+{
+    return type;
+}
+
+
 // parse an integer token
 int TokenInteger::parseToken(std::fstream &stream, int input_char)
 {
-    integer_string = input_char;
+    value = input_char;
     if (input_char == '0')
     {
         input_char = stream.peek();
         if (input_char == 'X' || input_char == 'x')
         {
-            integer_string += input_char;
+            value += input_char;
             input_char = stream.get();
             while (true)
             {
                 input_char = stream.get();
                 if (isxdigit(input_char)){
-                    integer_string += input_char;
+                    value += input_char;
                     continue;
                 }
                 return input_char;
@@ -27,7 +39,7 @@ int TokenInteger::parseToken(std::fstream &stream, int input_char)
     {
         input_char = stream.get();
         if (isxdigit(input_char)){
-            integer_string += input_char;
+            value += input_char;
             continue;
         }
         return input_char;
@@ -36,7 +48,7 @@ int TokenInteger::parseToken(std::fstream &stream, int input_char)
 
 void TokenInteger::printToken() 
 {
-    std::cout << "TOKEN[\"integer\" , " << integer_string << "]" << std::endl;
+    std::cout << "TOKEN[\"integer\" , " << value << "]" << std::endl;
 }
 
 //============================================= WHITE SPACE ==================================================== //
@@ -75,13 +87,13 @@ void TokenEOL::printToken()
 
 int TokenInstruction::parseToken(std::fstream& stream, int input_char)
 {
-    symbol = input_char;
+    value = input_char;
     while (true)
     {
         input_char = stream.get();
         if (isalpha(input_char) || isdigit(input_char))
         {
-            symbol += input_char;
+            value += input_char;
             continue;
         }
         return input_char;
@@ -90,13 +102,13 @@ int TokenInstruction::parseToken(std::fstream& stream, int input_char)
 
 void TokenInstruction::printToken()
 {
-    std::cout << "TOKEN[\"symbol , \"" << symbol<< "\"]" << std::endl;
+    std::cout << "TOKEN[\"instruction , \"" << value << "\"]" << std::endl;
 } 
 
 //============================================= PUNCTUATION ============================================ //
 int TokenPunctuation::parseToken(std::fstream& stream, int input_char)
 {
-    punctuation_string = input_char;
+    value = input_char;
     switch (input_char)
     {
 
@@ -107,5 +119,16 @@ int TokenPunctuation::parseToken(std::fstream& stream, int input_char)
 
 void TokenPunctuation::printToken()
 {
-    std::cout << "TOKEN[\"punctuation , \"" << punctuation_string<< "\"]" << std::endl;
+    std::cout << "TOKEN[\"punctuation , \"" << value << "\"]" << std::endl;
 }
+
+//============================================= OPERAND ============================================ //
+int TokenOperand::parseToken(std::fstream& stream, int input_char)
+{
+
+}
+
+void TokenOperand::printToken()
+{
+    std::cout << "TOKEN[\"operand, \"" << value << "\"]" << std::endl;
+}   

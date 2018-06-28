@@ -1,78 +1,31 @@
 #include "Parser.hpp"
-#include "Token.hpp"
 #include <iostream>
+#include <iterator>
 
-TokenParser::TokenParser(std::fstream &stream)
-:sourceStream(stream)
+void Parser::Parse(std::list<Token*> tokenList)
 {
+    std::list<Token*>::iterator itt;
 
-}
-
-bool TokenParser::parseTokens()
-{
-    Token *token;
-
-    while (!sourceStream.eof())
+    for (itt = tokenList.begin(); itt != tokenList.end(); itt++)
     {
-        int input_char = sourceStream.get();
-        while (!sourceStream.eof())
+        if ((*itt)->getType() == TOKEN_TYPE::t_instruction)
         {
-            do 
+            if ((*itt)->getValue() == "push")
             {
-                // remove comments from the file
-                if (input_char == ';')
+                auto next = std::next(itt, 2);
+                if (((*next)->getType() == TOKEN_TYPE::t_instruction))
                 {
-                    int peek_character = sourceStream.peek();
-                    while (peek_character != 0x0A && !sourceStream.eof()){
-                        peek_character = sourceStream.get();
+                    if ((*next)->getValue() == "int32" || (*next)->getValue() == "int8"
+                    || (*next)->getValue() == "int16" || (*next)->getValue() == "float" || (*next)->getValue() == "double")
+                    {
+                        OperandInt op;
                     }
-                    token = new TokenEOL;
-                    break;
-                }
-                if (isdigit(input_char))
-                {
-                    token = new TokenInteger;
-                    break;
-                }
-                if (input_char == 0x0A )
-                {
-                    token = new TokenEOL;
-                    break;
-                }
-                if (isspace(input_char))
-                {
-                    token = new TokenSpace;
-                    break;
-                }
-                if (isalpha(input_char))
-                {
-                    token = new TokenInstruction;
-                    break;
-                }
-                if (ispunct(input_char))
-                {
-                    token = new TokenPunctuation();
-                    break;
-                }
+                    else 
+                    {
+                        std::cout << "Exception: You are trying to push an illegal operand" << std::endl;
+                    }
+                }    
             }
-            while (false);
-            if (token == NULL) return false;
-            input_char = token->parseToken(sourceStream, input_char);
-
-            // Push the token to the list
-            tokenList.push_back(token);
-            continue ;
         }
-    }
-
-    // Add the EOF token to the end of the list TODO
-    return true;
-}
-
-void TokenParser::printTokens()
-{
-    for (auto i : tokenList)
-    {
-        i->printToken();
     }
 }

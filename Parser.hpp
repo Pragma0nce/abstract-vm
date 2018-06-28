@@ -1,17 +1,13 @@
 #pragma once
-#include <fstream>
+#include "Token.hpp"
 #include <list>
+#include <stack>
+#include "IOperand.hpp"
 
-class Token;
-
-class TokenParser 
+class Parser
 {
-private:
-    std::fstream& sourceStream;
-    std::list<Token*> tokenList;
+private: 
+    std::stack<IOperand*> stack;  
 public:
-    TokenParser(std::fstream& stream);
-
-    bool parseTokens();
-    void printTokens();
+    void Parse(std::list<Token*> tokenList);
 };

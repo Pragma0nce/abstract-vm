@@ -1,6 +1,7 @@
 #include <iostream>
-#include "Parser.hpp"
+#include "Lexer.hpp"
 #include "Token.hpp"
+#include "Parser.hpp"
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -21,8 +22,10 @@ int main(int argc, char *argv[])
     }
 
     // Create the token list
-    TokenParser parser(source);
-    parser.parseTokens();
-    parser.printTokens();
+    TokenLexer lexer(source);
+    lexer.parseTokens();
+    lexer.printTokens();
 
+    Parser parser;
+    parser.Parse(*lexer.getTokenList());
 }
