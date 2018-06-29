@@ -2,8 +2,8 @@
 ; exemple.avm -
 ; -------------
 
-push int32(42) ;hello
-push int32(33)
+push int8(12) ;hello
+push int8(33)
 
 add
 

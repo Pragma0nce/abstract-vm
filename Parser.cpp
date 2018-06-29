@@ -2,6 +2,21 @@
 #include <iostream>
 #include <iterator>
 
+void Parser::printStack()
+{
+    auto stackCopy = stack;
+    int i = 0;
+
+    while (stackCopy.size() > 0)
+    {
+        auto ptr = dynamic_cast<Operand<char>*>(stackCopy.top());
+
+            std::cout << "STACK[" << i << "]" << (int)ptr->getValue().int8 << std::endl; 
+        stackCopy.pop();
+        i++;
+    }
+}
+
 void Parser::Parse(std::list<Token*> tokenList)
 {
     std::list<Token*>::iterator itt;
@@ -12,19 +27,76 @@ void Parser::Parse(std::list<Token*> tokenList)
         {
             if ((*itt)->getValue() == "push")
             {
-                auto next = std::next(itt, 2);
-                if (((*next)->getType() == TOKEN_TYPE::t_instruction))
+                auto instr = std::next(itt, 2);
+                if (((*instr )->getType() == TOKEN_TYPE::t_instruction))
                 {
-                    if ((*next)->getValue() == "int32" || (*next)->getValue() == "int8"
-                    || (*next)->getValue() == "int16" || (*next)->getValue() == "float" || (*next)->getValue() == "double")
+                    if ((*instr )->getValue() == "int32" || (*instr )->getValue() == "int8"
+                    || (*instr )->getValue() == "int16")
                     {
-                        OperandInt op;
+                        auto punct= std::next(instr, 1);
+                        if ((*punct)->getValue() == "(")
+                        {
+                            auto value = std::next(punct, 1);
+
+
+                            if ((*value)->getType() == TOKEN_TYPE::t_integer && (*std::next(value,1))->getValue() == ")")
+                            {
+                                Operand<char> *op = new Operand<char>();
+
+                                //OperandInt8 *op = new OperandInt8();
+                                U_OperandType newValue;
+                                newValue.int8 = std::stoi((*value)->getValue());
+                                op->setValue(newValue);
+                                op->setType(eOperandType::t_int8);
+
+                                stack.push(op);
+                            }
+                            else
+                            {
+                                std::cout << "Exception: '" << (*instr)->getValue() << "' expects an integer value" << std::endl;
+                            }
+                        }
+                        else 
+                        {
+                            std::cout << "Exception: '" << (*instr)->getValue() << "' should be followed by a '('" << std::endl;
+                        }
+                    }
+                    else if ((*instr )->getValue() == "float" || (*instr )->getValue() == "double")
+                    {
+                        std::cout << "Float or double" << std::endl;
                     }
                     else 
                     {
-                        std::cout << "Exception: You are trying to push an illegal operand" << std::endl;
+                        std::cout << "You are trying to push an operand that does not exist" << std::endl;
                     }
                 }    
+            }
+            else if ((*itt)->getValue() == "add")
+            {
+                if (stack.size() >= 2)
+                {
+                    auto val1 = stack.top();
+                    stack.pop();
+                    auto val2 = stack.top();
+                    stack.pop();
+
+                    auto result = *val1 + *val2;
+
+                    /*OperandInt8 *intVal1;
+                    OperandInt8 *intVal2;
+
+                    if (val1->getType() == eOperandType::t_int8)
+                        intVal1 = dynamic_cast<OperandInt8*>(val1);
+                    if (val2->getType() == eOperandType::t_int8)
+                        intVal2 = dynamic_cast<OperandInt8*>(val2);
+                     
+                    OperandInt8 *op = new OperandInt8();
+                    std::cout << "Sum result: " << int(intVal1->getValue() + intVal2->getValue()) << std::endl;*/
+                }
+                else 
+                {
+                    std::cout << "Exception: stack needs atleast 2 values" << std::endl;
+                }
             }
         }
     }
