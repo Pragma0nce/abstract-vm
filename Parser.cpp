@@ -1,25 +1,27 @@
 #include "Parser.hpp"
 #include <iostream>
 #include <iterator>
+#include "OperandFactory.cpp"
 
 void Parser::printStack()
 {
-    auto stackCopy = stack;
-    int i = 0;
+    // auto stackCopy = stack;
+    // int i = 0;
 
-    while (stackCopy.size() > 0)
-    {
-        auto ptr = dynamic_cast<Operand<char>*>(stackCopy.top());
+    // while (stackCopy.size() > 0)
+    // {
+    //     auto ptr = dynamic_cast<Operand<char>*>(stackCopy.top());
 
-            std::cout << "STACK[" << i << "]" << (int)ptr->getValue().int8 << std::endl; 
-        stackCopy.pop();
-        i++;
-    }
+    //         std::cout << "STACK[" << i << "]" << (int)ptr->getValue().int8 << std::endl; 
+    //     stackCopy.pop();
+    //     i++;
+    // }
 }
 
 void Parser::Parse(std::list<Token*> tokenList)
 {
     std::list<Token*>::iterator itt;
+    OperandFactory opFactory;
 
     for (itt = tokenList.begin(); itt != tokenList.end(); itt++)
     {
@@ -41,15 +43,8 @@ void Parser::Parse(std::list<Token*> tokenList)
 
                             if ((*value)->getType() == TOKEN_TYPE::t_integer && (*std::next(value,1))->getValue() == ")")
                             {
-                                Operand<char> *op = new Operand<char>();
-
-                                //OperandInt8 *op = new OperandInt8();
-                                U_OperandType newValue;
-                                newValue.int8 = std::stoi((*value)->getValue());
-                                op->setValue(newValue);
-                                op->setType(eOperandType::t_int8);
-
-                                stack.push(op);
+                                IOperand const *op  = opFactory.createOperand(eOperandType::t_int8, (*value)->getValue());
+                                stack.push(const_cast<IOperand*>(op));
                             }
                             else
                             {

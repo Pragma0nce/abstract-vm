@@ -76,6 +76,7 @@ void Operand<T>::setValue(U_OperandType _value)
 }
 
 
+
 /*
  IOperand const * OperandInt8::operator+(  IOperand const & rhs ) const
 {

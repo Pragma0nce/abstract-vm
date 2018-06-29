@@ -3,7 +3,6 @@
 #include <list>
 #include <stack>
 #include "IOperand.hpp"
-#include "IOperand.cpp"
 
 class Parser
 {
