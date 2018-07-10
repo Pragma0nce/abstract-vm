@@ -1,5 +1,5 @@
 #include "OperandFactory.hpp"
-#include "IOperand.cpp"
+#include "Operand.hpp"
 
   // Typedef for the member function pointer, for everyone's sanity.
 typedef  IOperand const * (OperandFactory::*MemFn)(std::string const &value) const;

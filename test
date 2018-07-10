@@ -10,14 +10,15 @@ add
 push float(44.42)
 
 mul
-;
-;push double(42.42)
-;push int32(42)
-;
-;dump 
-;
-;pop
-;
-;assert double(42.42)
+
+push double(42.42)
+push int32(42)
+
+dump 
+
+pop
+
+dump
+assert double(42.42)
 ;
 ;exit

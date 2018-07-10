@@ -2,6 +2,48 @@
 #include <iostream>
 #include <iterator>
 #include "OperandFactory.hpp"
+#include "IOperand.hpp"
+
+bool Parser::isValidInt(std::list<Token*>::iterator itt)
+{
+    // if ((*itt )->getValue() == "int32" || (*i )->getValue() == "int8"
+    // || (*instr )->getValue() == "int16")
+    // {
+    //     auto punct= std::next(instr, 1);
+    //     if ((*punct)->getValue() == "(")
+    //     {
+    //         auto value = std::next(punct, 1);
+
+
+    //         if ((*value)->getType() == TOKEN_TYPE::t_integer && (*std::next(value,1))->getValue() == ")")
+    //         {
+    //             IOperand const *op;
+
+    //             if ((*instr)->getValue() == "int8")
+    //                 op  = opFactory.createOperand(eOperandType::t_int8, (*value)->getValue());
+    //             else if ((*instr)->getValue() == "int16")
+    //                 op  = opFactory.createOperand(eOperandType::t_int16, (*value)->getValue());
+    //             else if ((*instr)->getValue() == "int32")
+    //                 op  = opFactory.createOperand(eOperandType::t_int32, (*value)->getValue());
+
+    //             stack.push(const_cast<IOperand*>(op));
+    //         }
+    //         else
+    //         {
+    //             std::cout << "Exception: '" << (*instr)->getValue() << "' expects an integer value" << std::endl;
+    //         }
+    //     }
+    //     else 
+    //     {
+    //         std::cout << "Exception: '" << (*instr)->getValue() << "' should be followed by a '('" << std::endl;
+    //     }
+    // }   
+}
+
+bool Parser::isValidFloat(std::list<Token*>::iterator itt)
+{
+
+}
 
 void Parser::printStack()
 {
@@ -85,6 +127,13 @@ void Parser::Parse(std::list<Token*> tokenList)
                                     else 
                                         op = opFactory.createOperand(eOperandType::t_float, (*value)->getValue() + (*std::next(value,1))->getValue() + (*std::next(value,2))->getValue() );
                                 }
+                                else if ((*instr)->getValue() == "double")
+                                {
+                                     if ((*std::next(value, 1))->getValue() == ")")
+                                        op  = opFactory.createOperand(eOperandType::t_double, (*value)->getValue());
+                                    else 
+                                        op = opFactory.createOperand(eOperandType::t_double, (*value)->getValue() + (*std::next(value,1))->getValue() + (*std::next(value,2))->getValue() );                                   
+                                }
                                 stack.push(const_cast<IOperand*>(op));
                             }
                             else
@@ -136,6 +185,26 @@ void Parser::Parse(std::list<Token*> tokenList)
                 {
                     std::cout << "Exception: stack needs atleast 2 values" << std::endl;
                 }              
+            }
+            else if ((*itt)->getValue() == "dump")
+            {
+                printStack();
+            }
+            else if ((*itt)->getValue() == "pop")
+            {
+                stack.pop();
+            }
+            else if ((*itt)->getValue() == "assert")
+            {
+                auto type = std::next(itt, 2);
+                if ((*type)->getValue() == "double" || (*type)->getValue() == "float" || (*type)->getValue() == "int8" || (*type)->getValue() == "int16" || (*type)->getValue() == "int32")
+                {
+                    
+                }
+                else 
+                {
+                    std::cout << "Exception: Assert requires a type specifier" << std::endl;
+                }
             }
         }
     }

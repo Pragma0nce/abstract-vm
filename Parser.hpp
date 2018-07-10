@@ -12,4 +12,7 @@ private:
 public:
     void Parse(std::list<Token*> tokenList);
     void printStack();
+
+    bool isValidInt(std::list<Token*>::iterator itt);
+    bool isValidFloat(std::list<Token*>::iterator itt);
 };

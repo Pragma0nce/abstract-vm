@@ -1,7 +1,7 @@
 #pragma once 
-#include "IOperand.hpp"
 
-class IOperand;
+#include <string>
+#include "IOperand.hpp"
 
 class OperandFactory 
 {
