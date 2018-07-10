@@ -1,38 +1,51 @@
 #include "OperandFactory.hpp"
-// #include "IOperand.cpp"
+#include "IOperand.cpp"
 
+  // Typedef for the member function pointer, for everyone's sanity.
+typedef  IOperand const * (OperandFactory::*MemFn)(std::string const &value) const;
+#define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))
 
 IOperand const * OperandFactory::createInt8( std::string const & value ) const
 {
-    return createOperand(eOperandType::t_int8, value);
+    return new Operand<int8_t>(std::stoi(value));
 }
 
 IOperand const * OperandFactory::createInt16( std::string const & value ) const
 {
-    return createOperand(eOperandType::t_int8, value);
+    return new Operand<int16_t>(std::stoi(value));
 }
 
 IOperand const * OperandFactory::createInt32( std::string const & value ) const
 {
-    return createOperand(eOperandType::t_int8, value);
+    return new Operand<int32_t>(std::stoi(value));
 }
 
 IOperand const * OperandFactory::createFloat( std::string const & value ) const
 {
-    return createOperand(eOperandType::t_int8, value);
+    return new Operand<float>(std::stof(value));
 }
 
 IOperand const * OperandFactory::createDouble( std::string const & value ) const
 {
-    return createOperand(eOperandType::t_int8, value);
+    return new Operand<double>(std::stod(value));
 }
+
+
+
 
 IOperand const * OperandFactory::createOperand( eOperandType type, std::string const & value ) const
 {
-    Operand<char> *op = new Operand<char>();
-    U_OperandType newValue;
-    newValue.int8 = std::stoi(value);
-    op->setValue(newValue);
-    op->setType(eOperandType::t_int8);    
-    return op;
+	static Memfuncts list[] = {
+		&OperandFactory::createInt8,
+		&OperandFactory::createInt16,
+		&OperandFactory::createInt32,
+		&OperandFactory::createFloat,
+		&OperandFactory::createDouble
+	};
+
+    IOperand const * created = nullptr;
+	Memfuncts func = list[type];
+	created = (this->*func)(value);
+
+	return created;
 }

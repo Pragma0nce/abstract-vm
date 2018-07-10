@@ -1,6 +1,7 @@
 #pragma once 
-
 #include "IOperand.hpp"
+
+class IOperand;
 
 class OperandFactory 
 {
@@ -11,5 +12,6 @@ private:
     IOperand const * createFloat( std::string const & value ) const;
     IOperand const * createDouble( std::string const & value ) const;
 public: 
+    typedef IOperand const * (OperandFactory::*Memfuncts)(std::string const &) const;
     IOperand const * createOperand( eOperandType type, std::string const & value ) const;
 };

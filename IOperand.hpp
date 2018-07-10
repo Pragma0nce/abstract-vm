@@ -27,19 +27,15 @@ public:
     virtual ~IOperand( void ) {}
 };
 
-union U_OperandType
-{
-    std::int32_t int32;
-    std::uint16_t int16;
-    std::uint8_t int8;
-};
 
 template <typename T>
 class Operand : public IOperand 
 {
 private:
-    U_OperandType value;
+    std::string _value;
 public:
+    Operand( T value );
+
     int getPrecision( void ) const override; // Precision of the type of the instance
     eOperandType getType( void ) const override; // Type of the instance
     void setType(eOperandType _type);
@@ -51,7 +47,5 @@ public:
     IOperand const * operator%( IOperand const & rhs ) const override; // Modulo
     std::string const & toString( void ) const override; // String representation of the instance
 
-    U_OperandType getValue();
-    void setValue(U_OperandType _value);
 };
 

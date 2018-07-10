@@ -1,18 +1,25 @@
 #include "IOperand.hpp"
 #include <iostream>
 #include <string>
+#include "OperandFactory.hpp"
 
 template <typename T>
-int Operand<T>::getPrecision( void ) const
+Operand<T>::Operand(T value )
 {
-    return 0;
+    this->_value = std::to_string(value);
 }
 
-template <typename T>
-eOperandType Operand<T>::getType( void ) const
-{
-    return type;
-}
+// template <typename T>
+// int Operand<T>::getPrecision( void ) const
+// {
+//     return 0;
+// }
+
+// template <typename T>
+// eOperandType Operand<T>::getType( void ) const
+// {
+//     return type;
+// }
 
 template <typename T>
 void Operand<T>::setType(eOperandType _type)
@@ -23,10 +30,14 @@ void Operand<T>::setType(eOperandType _type)
 template <typename T>
 IOperand const * Operand<T>::operator+(  IOperand const & rhs ) const
 {
-    Operand *op = const_cast<Operand*>(dynamic_cast<const Operand*>(&rhs));
-    op->getValue(); 
+	if (this->getPrecision() < rhs.getPrecision()) return (rhs + *this);
+	T lhs_value = static_cast<T>(stod(this->_value));
+	T rhs_value = static_cast<T>(stod(rhs.toString()));
 
-    return &rhs;
+	// add_flow_check<T>(lhs_value, rhs_value);
+	OperandFactory factory;
+	IOperand const * ret_val = factory.createOperand(this->getType(), std::to_string(static_cast<T>(stod(this->_value)) + rhs_value));
+	return ret_val;
 }
 
 template <typename T>
@@ -38,7 +49,17 @@ IOperand const * Operand<T>::operator-(  IOperand const & rhs ) const
 template <typename T>
 IOperand const * Operand<T>::operator*( IOperand const & rhs ) const
 {
-    return &rhs;
+    std::cout << "Val1 prec: " << this->getPrecision() << std::endl;
+    std::cout << "Val2 prec: " << rhs.getPrecision() << std::endl;
+
+	if (this->getPrecision() < rhs.getPrecision()) return (rhs * *this);
+	T lhs_value = static_cast<T>(stod(this->_value));
+	T rhs_value = static_cast<T>(stod(rhs.toString()));
+
+	// add_flow_check<T>(lhs_value, rhs_value);
+	OperandFactory factory;
+	IOperand const * ret_val = factory.createOperand(this->getType(), std::to_string(static_cast<T>(stod(this->_value)) * rhs_value));
+	return ret_val;
 }
 
 template <typename T>
@@ -53,28 +74,41 @@ IOperand const * Operand<T>::operator%( IOperand const & rhs ) const
     return &rhs;
 }
 
-template <typename T>
-std::string const & Operand<T>::toString( void ) const
+template<class T> 
+std::string const & Operand<T>::toString( void ) const 
 {
-    std::string *str = new std::string();
-    str->clear();
-    *str += std::to_string(value.int8);
-
-    return *str;
+	return this->_value;
 }
 
-template <typename T>
-U_OperandType Operand<T>::getValue()
-{
-    return value;
-}
 
-template <typename T>
-void Operand<T>::setValue(U_OperandType _value)
-{
-    value = _value;
-}
+//****************************
+// CLASS TEMPLATE SPECIALIZATION
+//****************************
 
+template<> int			Operand<int8_t>::getPrecision( void ) const		{ return t_int8; }
+template<> eOperandType	Operand<int8_t>::getType( void ) const			{ return t_int8; }
+
+template<> int			Operand<int16_t>::getPrecision( void ) const	{ return t_int16; }
+template<> eOperandType	Operand<int16_t>::getType( void ) const			{ return t_int16; }
+
+template<> int			Operand<int32_t>::getPrecision( void ) const	{ return t_int32; }
+template<> eOperandType	Operand<int32_t>::getType( void ) const			{ return t_int32; }
+
+template<> int			Operand<float>::getPrecision( void ) const		{ return t_float; }
+template<> eOperandType	Operand<float>::getType( void ) const			{ return t_float; }
+
+template<> int			Operand<double>::getPrecision( void ) const		{ return t_double; }
+template<> eOperandType	Operand<double>::getType( void ) const			{ return t_double; }
+
+//****************************
+// CLASS TEMPLATE HARD DECLARATION
+//****************************
+
+template class Operand<int8_t>;
+template class Operand<int16_t>;
+template class Operand<int32_t>;
+template class Operand<float>;
+template class Operand<double>;
 
 
 /*

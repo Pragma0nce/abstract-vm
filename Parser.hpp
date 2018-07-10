@@ -2,7 +2,8 @@
 #include "Token.hpp"
 #include <list>
 #include <stack>
-#include "IOperand.hpp"
+
+class IOperand;
 
 class Parser
 {
