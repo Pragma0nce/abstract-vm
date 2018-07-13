@@ -1,5 +1,6 @@
 #include "OperandFactory.hpp"
 #include "Operand.hpp"
+#include "Exceptions.hpp"
 
   // Typedef for the member function pointer, for everyone's sanity.
 typedef  IOperand const * (OperandFactory::*MemFn)(std::string const &value) const;
@@ -7,26 +8,54 @@ typedef  IOperand const * (OperandFactory::*MemFn)(std::string const &value) con
 
 IOperand const * OperandFactory::createInt8( std::string const & value ) const
 {
+	long double expected = stod(value);
+	if (expected > std::numeric_limits<int8_t>::max())
+		throw ExceptionOverflow();
+	else if (expected < std::numeric_limits<int8_t>::min())
+		throw ExceptionUnderflow();
+
     return new Operand<int8_t>(std::stoi(value));
 }
 
 IOperand const * OperandFactory::createInt16( std::string const & value ) const
 {
+	long double expected = stod(value);
+	if (expected > std::numeric_limits<int16_t>::max())
+		throw ExceptionOverflow();
+	else if (expected < std::numeric_limits<int16_t>::min())
+		throw ExceptionUnderflow();
+
     return new Operand<int16_t>(std::stoi(value));
 }
 
 IOperand const * OperandFactory::createInt32( std::string const & value ) const
 {
+	long double expected = stod(value);
+	if (expected > std::numeric_limits<int32_t>::max())
+		throw ExceptionOverflow();
+	else if (expected < std::numeric_limits<int32_t>::min())
+		throw ExceptionUnderflow();
+
     return new Operand<int32_t>(std::stoi(value));
 }
 
 IOperand const * OperandFactory::createFloat( std::string const & value ) const
 {
+	long double expected = stod(value);
+	if (expected > std::numeric_limits<float>::max())
+		throw ExceptionOverflow();
+	else if (expected < std::numeric_limits<float>::min())
+		throw ExceptionUnderflow();
     return new Operand<float>(std::stof(value));
 }
 
 IOperand const * OperandFactory::createDouble( std::string const & value ) const
 {
+	long double expected = stod(value);
+	if (expected > std::numeric_limits<double>::max())
+		throw ExceptionOverflow();
+	else if (expected < std::numeric_limits<double>::min())
+		throw ExceptionUnderflow();
     return new Operand<double>(std::stod(value));
 }
 

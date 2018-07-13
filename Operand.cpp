@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include "OperandFactory.hpp"
+#include <math.h>
+#include "Exceptions.hpp"
 
 template <typename T>
 Operand<T>::Operand(T value )
@@ -35,6 +37,7 @@ IOperand const * Operand<T>::operator+(  IOperand const & rhs ) const
 	T rhs_value = static_cast<T>(stod(rhs.toString()));
 
 	// add_flow_check<T>(lhs_value, rhs_value);
+
 	OperandFactory factory;
 	IOperand const * ret_val = factory.createOperand(this->getType(), std::to_string(static_cast<T>(stod(this->_value)) + rhs_value));
 	return ret_val;
@@ -63,6 +66,9 @@ template <typename T>
 IOperand const * Operand<T>::operator/( IOperand const & rhs ) const 
 {
 	//TODO: Check for divide by zero
+	if (std::stod(rhs.toString()) == 0){
+		throw ExceptionDivideByZero();
+	}
 
 	if (this->getPrecision() < rhs.getPrecision()) return (rhs / *this);
 	T lhs_value = static_cast<T>(stod(this->_value));
@@ -77,7 +83,20 @@ IOperand const * Operand<T>::operator/( IOperand const & rhs ) const
 template <typename T>
 IOperand const * Operand<T>::operator%( IOperand const & rhs ) const
 {
-    return &rhs;
+	//TODO: Check for divide by zero
+	if (std::stod(rhs.toString()) == 0){
+		std::cout << "Exception: divide by zero" << std::endl;
+		return 0;
+	}
+
+	if (this->getPrecision() < rhs.getPrecision()) return (rhs % *this);
+	T lhs_value = static_cast<T>(stod(this->_value));
+	T rhs_value = static_cast<T>(stod(rhs.toString()));
+
+	// add_flow_check<T>(lhs_value, rhs_value);
+	OperandFactory factory;
+	IOperand const * ret_val = factory.createOperand(this->getType(), std::to_string(static_cast<T>(fmod(stod(this->_value),rhs_value))));
+	return ret_val;
 }
 
 template<class T> 

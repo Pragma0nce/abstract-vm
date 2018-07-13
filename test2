@@ -1,5 +1,2 @@
-push int32(0)
-push int32(0)
-dump
-div
-dump
+push int8(66)
+print
