@@ -57,7 +57,7 @@ int TokenSpace::parseToken(std::fstream& stream, int input_char)
     while (true)
     {
         input_char = stream.get();
-        if (isspace(input_char)){
+        if (input_char == ' ' || input_char == '\t'){
             continue;
         }
         return input_char;

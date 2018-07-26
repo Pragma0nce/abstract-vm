@@ -46,7 +46,15 @@ IOperand const * Operand<T>::operator+(  IOperand const & rhs ) const
 template <typename T>
 IOperand const * Operand<T>::operator-(  IOperand const & rhs ) const
 {
-    return &rhs;
+	if (this->getPrecision() < rhs.getPrecision()) return (rhs - *this);
+	T lhs_value = static_cast<T>(stod(this->_value));
+	T rhs_value = static_cast<T>(stod(rhs.toString()));
+
+	// add_flow_check<T>(lhs_value, rhs_value);
+
+	OperandFactory factory;
+	IOperand const * ret_val = factory.createOperand(this->getType(), std::to_string(static_cast<T>(stod(this->_value)) - rhs_value));
+	return ret_val;
 }
 
 template <typename T>

@@ -1,6 +1,7 @@
 #include "OperandFactory.hpp"
 #include "Operand.hpp"
 #include "Exceptions.hpp"
+#include <iostream>
 
   // Typedef for the member function pointer, for everyone's sanity.
 typedef  IOperand const * (OperandFactory::*MemFn)(std::string const &value) const;
@@ -44,7 +45,7 @@ IOperand const * OperandFactory::createFloat( std::string const & value ) const
 	long double expected = stod(value);
 	if (expected > std::numeric_limits<float>::max())
 		throw ExceptionOverflow();
-	else if (expected < std::numeric_limits<float>::min())
+	else if (expected < std::numeric_limits<float>::lowest())
 		throw ExceptionUnderflow();
     return new Operand<float>(std::stof(value));
 }
@@ -54,7 +55,7 @@ IOperand const * OperandFactory::createDouble( std::string const & value ) const
 	long double expected = stod(value);
 	if (expected > std::numeric_limits<double>::max())
 		throw ExceptionOverflow();
-	else if (expected < std::numeric_limits<double>::min())
+	else if (expected < std::numeric_limits<double>::lowest())
 		throw ExceptionUnderflow();
     return new Operand<double>(std::stod(value));
 }

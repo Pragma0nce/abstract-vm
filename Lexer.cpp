@@ -34,12 +34,12 @@ bool TokenLexer::parseTokens()
                     token = new TokenInteger;
                     break;
                 }
-                if (input_char == 0x0A )
+                if (input_char == 0x0A   || input_char =='\0')
                 {
                     token = new TokenEOL;
                     break;
                 }
-                if (isspace(input_char))
+                if (input_char == ' ' || input_char == '\t')
                 {
                     token = new TokenSpace;
                     break;
