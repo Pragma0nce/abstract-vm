@@ -158,10 +158,10 @@ void Parser::printStack()
 
 }
 
-std::list<Token*>::iterator &nextToken(std::list<Token*>::iterator &it, int n)
-{
+// std::list<Token*>::iterator &nextToken(std::list<Token*>::iterator &it, int n)
+// {
 
-}
+// }
 
 std::string checkForNegative(std::list<Token*>::iterator &val)
 {
@@ -206,7 +206,7 @@ try {
                         auto value = std::next(instr, 2);
                         std::string strValue = checkForNegative(value);
 
-                        IOperand const *op;
+                        IOperand const *op = NULL;
 
                         if ((*instr)->getValue() == "int8")
                             op  = opFactory.createOperand(eOperandType::t_int8, strValue);
@@ -219,7 +219,7 @@ try {
                     }
                     else if (isValidFloat(instr))
                     {
-                        IOperand const *op;
+                        IOperand const *op = NULL;
                         auto value = std::next(instr, 2);
                         std::string strValue = checkForNegative(value);
                         int offset = 0;
@@ -401,6 +401,8 @@ try {
                 if (isValidInt(type) || isValidFloat(type))
                 {
                     IOperand const *op;
+                    op = NULL;
+
                     if (isValidInt(type)){
                         auto value = std::next(type, 2);
                         std::string strValue = checkForNegative(value);

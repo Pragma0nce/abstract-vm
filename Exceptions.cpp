@@ -14,3 +14,24 @@ ExceptionUnknownInstruction::ExceptionUnknownInstruction(std::string msg)
 {
     errorMsg = msg;
 }
+
+ExceptionUnknownInstruction::ExceptionUnknownInstruction()
+{
+    errorMsg = "error";
+}
+
+ExceptionUnknownInstruction::ExceptionUnknownInstruction(const ExceptionUnknownInstruction & _instruction)
+{
+    this->errorMsg = _instruction.errorMsg;
+}
+
+ExceptionUnknownInstruction & ExceptionUnknownInstruction::operator=(const ExceptionUnknownInstruction & _rhs)
+{
+    this->errorMsg = _rhs.errorMsg;
+    return *this;
+}
+
+ExceptionUnknownInstruction::~ExceptionUnknownInstruction() throw()
+{
+
+}

@@ -123,10 +123,6 @@ void TokenPunctuation::printToken()
 }
 
 //============================================= OPERAND ============================================ //
-int TokenOperand::parseToken(std::fstream& stream, int input_char)
-{
-    return 0;
-}
 
 void TokenOperand::printToken()
 {

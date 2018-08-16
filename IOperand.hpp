@@ -15,6 +15,10 @@ enum eOperandType
 class IOperand {
 protected:
     eOperandType type;
+    IOperand();
+    IOperand(const IOperand & _op);
+    IOperand & operator=(const IOperand & _rhs);
+
 public:
     virtual int getPrecision( void ) const = 0; // Precision of the type of the instance
     virtual eOperandType getType( void ) const = 0; // Type of the instance

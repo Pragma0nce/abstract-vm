@@ -11,8 +11,14 @@ class ExceptionUnknownInstruction : public std::exception
 {
 private: 
     std::string errorMsg;
+protected: 
+
 public: 
+
+    ExceptionUnknownInstruction();
+    ExceptionUnknownInstruction(const ExceptionUnknownInstruction & _instruction);
+    ExceptionUnknownInstruction & operator=(const ExceptionUnknownInstruction & _rhs);
     ExceptionUnknownInstruction(std::string msg);
     char const * what( void ) const _NOEXCEPT; 
-    ~ExceptionUnknownInstruction() throw() {};
+    ~ExceptionUnknownInstruction() throw();
 };

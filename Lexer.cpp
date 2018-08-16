@@ -2,7 +2,7 @@
 #include "Token.hpp"
 #include <iostream>
 
-TokenLexer::TokenLexer(std::fstream &stream)
+TokenLexer::TokenLexer(std::fstream *stream)
 :sourceStream(stream)
 {
 
@@ -12,19 +12,19 @@ bool TokenLexer::parseTokens()
 {
     Token *token;
 
-    while (!sourceStream.eof())
+    while (!sourceStream->eof())
     {
-        int input_char = sourceStream.get();
-        while (!sourceStream.eof())
+        int input_char = sourceStream->get();
+        while (!sourceStream->eof())
         {
             do 
             {
                 // remove comments from the file
                 if (input_char == ';')
                 {
-                    int peek_character = sourceStream.peek();
-                    while (peek_character != 0x0A && !sourceStream.eof()){
-                        peek_character = sourceStream.get();
+                    int peek_character = sourceStream->peek();
+                    while (peek_character != 0x0A && !sourceStream->eof()){
+                        peek_character = sourceStream->get();
                     }
                     token = new TokenEOL;
                     break;
@@ -57,7 +57,7 @@ bool TokenLexer::parseTokens()
             }
             while (false);
             if (token == NULL) return false;
-            input_char = token->parseToken(sourceStream, input_char);
+            input_char = token->parseToken(*sourceStream, input_char);
 
             // Push the token to the list
             tokenList.push_back(token);
@@ -80,4 +80,21 @@ void TokenLexer::printTokens()
 std::list<Token*> *TokenLexer::getTokenList()
 {
     return &tokenList;
+}
+
+
+TokenLexer::TokenLexer (const TokenLexer  & _op)
+{
+    this->sourceStream = _op.sourceStream;
+}
+
+TokenLexer  & TokenLexer::operator=(const TokenLexer & _rhs)
+{
+    this->sourceStream = _rhs.sourceStream;
+    return (*this);
+}
+
+TokenLexer::~TokenLexer()
+{
+
 }

@@ -7,13 +7,19 @@ class Token;
 class TokenLexer 
 {
 private:
-    std::fstream& sourceStream;
+    std::fstream *sourceStream;
     std::list<Token*> tokenList;
+
+protected:
 public:
-    TokenLexer(std::fstream& stream);
+    TokenLexer (const TokenLexer  & _op);
+    TokenLexer  & operator=(const TokenLexer & _rhs);
+    TokenLexer ();
+    TokenLexer(std::fstream* stream);
 
     bool parseTokens();
     void printTokens();
 
     std::list<Token*> *getTokenList();
+    ~TokenLexer();
 };

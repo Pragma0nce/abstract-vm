@@ -16,7 +16,7 @@ int startParsingFile(std::string filename, std::stack<IOperand*> &stack)
     }
 
     // Create the token list
-    TokenLexer lexer(source);
+    TokenLexer lexer(&source);
     lexer.parseTokens();
     //lexer.printTokens();
 

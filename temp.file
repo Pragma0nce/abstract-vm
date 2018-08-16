@@ -1,3 +1,2 @@
-push int8(10)
-push int8(20)
+push int32(32)
 dump

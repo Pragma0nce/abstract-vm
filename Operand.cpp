@@ -33,7 +33,7 @@ template <typename T>
 IOperand const * Operand<T>::operator+(  IOperand const & rhs ) const
 {
 	if (this->getPrecision() < rhs.getPrecision()) return (rhs + *this);
-	T lhs_value = static_cast<T>(stod(this->_value));
+	//T lhs_value = static_cast<T>(stod(this->_value));
 	T rhs_value = static_cast<T>(stod(rhs.toString()));
 
 	// add_flow_check<T>(lhs_value, rhs_value);
@@ -47,7 +47,7 @@ template <typename T>
 IOperand const * Operand<T>::operator-(  IOperand const & rhs ) const
 {
 	if (this->getPrecision() < rhs.getPrecision()) return (rhs - *this);
-	T lhs_value = static_cast<T>(stod(this->_value));
+	//T lhs_value = static_cast<T>(stod(this->_value));
 	T rhs_value = static_cast<T>(stod(rhs.toString()));
 
 	// add_flow_check<T>(lhs_value, rhs_value);
@@ -61,7 +61,7 @@ template <typename T>
 IOperand const * Operand<T>::operator*( IOperand const & rhs ) const
 {
 	if (this->getPrecision() < rhs.getPrecision()) return (rhs * *this);
-	T lhs_value = static_cast<T>(stod(this->_value));
+	//T lhs_value = static_cast<T>(stod(this->_value));
 	T rhs_value = static_cast<T>(stod(rhs.toString()));
 
 	// add_flow_check<T>(lhs_value, rhs_value);
@@ -79,7 +79,7 @@ IOperand const * Operand<T>::operator/( IOperand const & rhs ) const
 	}
 
 	if (this->getPrecision() < rhs.getPrecision()) return (rhs / *this);
-	T lhs_value = static_cast<T>(stod(this->_value));
+	//T lhs_value = static_cast<T>(stod(this->_value));
 	T rhs_value = static_cast<T>(stod(rhs.toString()));
 
 	// add_flow_check<T>(lhs_value, rhs_value);
@@ -98,7 +98,7 @@ IOperand const * Operand<T>::operator%( IOperand const & rhs ) const
 	}
 
 	if (this->getPrecision() < rhs.getPrecision()) return (rhs % *this);
-	T lhs_value = static_cast<T>(stod(this->_value));
+	//T lhs_value = static_cast<T>(stod(this->_value));
 	T rhs_value = static_cast<T>(stod(rhs.toString()));
 
 	// add_flow_check<T>(lhs_value, rhs_value);
