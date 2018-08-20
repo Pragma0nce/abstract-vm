@@ -24,6 +24,31 @@ Operand<T>::Operand(T value )
 // }
 
 template <typename T>
+Operand<T>  & Operand<T>::operator=(const Operand & _rhs)
+{
+	_value = _rhs._value;
+	return (*this);
+}
+
+template <typename T>
+Operand<T>::Operand (const Operand  & _op)
+{
+	_value = _op._value;
+}
+
+template <typename T>
+Operand<T>::Operand()
+{
+
+}
+
+template <typename T>
+Operand<T>::~Operand()
+{
+
+}
+
+template <typename T>
 void Operand<T>::setType(eOperandType _type)
 {
     type = _type;

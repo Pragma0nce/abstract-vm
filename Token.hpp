@@ -23,6 +23,11 @@ protected:
     TOKEN_TYPE type;
     std::string value;
 public: 
+    Token  & operator=(const Token & _rhs);
+    Token (const Token  & _op);
+    Token();
+    ~Token();
+
     Token(TOKEN_TYPE token) : type(token){};
 
     virtual int parseToken(std::fstream& stream, int input_char) = 0;

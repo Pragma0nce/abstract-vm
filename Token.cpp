@@ -1,6 +1,30 @@
 #include "Token.hpp"
 #include <iostream>
 
+Token  & Token::operator=(const Token & _rhs)
+{
+    type = _rhs.type;
+    value = _rhs.value;
+    return (*this);
+}
+
+
+Token::Token (const Token  & _op)
+{
+    type = _op.type;
+    value = _op.value;
+}
+
+Token::Token()
+{
+
+}
+
+Token::~Token()
+{
+
+}
+
 // parent class
 std::string Token::getValue()
 {

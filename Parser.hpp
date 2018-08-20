@@ -9,11 +9,16 @@ class Parser
 {
 private: 
 
-    std::stack<IOperand*> &stack;  
+    std::stack<IOperand*> *stack;  
 
     bool isValidWord(std::list<Token*>::iterator &itt);
 public:
-    Parser(std::stack<IOperand*> &stack);
+    Parser  & operator=(const Parser & _rhs);
+    Parser (const Parser  & _op);
+    Parser();
+    ~Parser();
+
+    Parser(std::stack<IOperand*> *stack);
     void Parse(std::list<Token*> tokenList);
 
 

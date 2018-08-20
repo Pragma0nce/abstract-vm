@@ -20,7 +20,7 @@ int startParsingFile(std::string filename, std::stack<IOperand*> &stack)
     lexer.parseTokens();
     //lexer.printTokens();
 
-    Parser parser(stack);
+    Parser parser(&stack);
     parser.Parse(*lexer.getTokenList());
     return (0);
 }

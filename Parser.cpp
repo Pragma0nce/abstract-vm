@@ -27,9 +27,10 @@ std::string validWords[] =
     "sub"
 };
 
-Parser::Parser(std::stack<IOperand*> & _stack)
+Parser::Parser(std::stack<IOperand*> * _stack)
 :stack(_stack)
 {
+
 }
 
 bool Parser::isValidWord(std::list<Token*>::iterator &itt)
@@ -147,12 +148,12 @@ void Parser::printStack()
     auto stackCopy = stack;
     int i = 0;
 
-    while (stackCopy.size() > 0)
+    while (stackCopy->size() > 0)
     {
-        auto ptr = stackCopy.top();
+        auto ptr = stackCopy->top();
 
             std::cout << "STACK[" << i << "]" << ptr->toString() << std::endl; 
-        stackCopy.pop();
+        stackCopy->pop();
         i++;
     }
 
@@ -215,7 +216,7 @@ try {
                         else if ((*instr)->getValue() == "int32")
                             op  = opFactory.createOperand(eOperandType::t_int32, strValue);
 
-                        stack.push(const_cast<IOperand*>(op));                        
+                        stack->push(const_cast<IOperand*>(op));                        
                     }
                     else if (isValidFloat(instr))
                     {
@@ -242,7 +243,7 @@ try {
                             else 
                                 op = opFactory.createOperand(eOperandType::t_double, strValue + (*std::next(value,1 + offset))->getValue() + (*std::next(value,2 + offset))->getValue() );                                   
                         }
-                        stack.push(const_cast<IOperand*>(op));
+                        stack->push(const_cast<IOperand*>(op));
                     }
                     else 
                     {
@@ -261,15 +262,15 @@ try {
                     throw ExceptionUnknownInstruction("add should be followed by an EOL");
                 }
 
-                if (stack.size() >= 2)
+                if (stack->size() >= 2)
                 {
-                    auto val1 = stack.top();
-                    stack.pop();
-                    auto val2 = stack.top();
-                    stack.pop();
+                    auto val1 = stack->top();
+                    stack->pop();
+                    auto val2 = stack->top();
+                    stack->pop();
 
                     auto result = *val1 + *val2;
-                    stack.push(const_cast<IOperand*>(result));
+                    stack->push(const_cast<IOperand*>(result));
                 }
                 else 
                 {
@@ -283,15 +284,15 @@ try {
                     throw ExceptionUnknownInstruction("sub should be followed by an EOL");
                 }
 
-                 if (stack.size() >= 2)
+                 if (stack->size() >= 2)
                 {
-                    auto val1 = stack.top();
-                    stack.pop();
-                    auto val2 = stack.top();
-                    stack.pop();
+                    auto val1 = stack->top();
+                    stack->pop();
+                    auto val2 = stack->top();
+                    stack->pop();
 
                     auto result = *val1 - *val2;
-                    stack.push(const_cast<IOperand*>(result));
+                    stack->push(const_cast<IOperand*>(result));
                 }
                 else 
                 {
@@ -304,15 +305,15 @@ try {
                 if ((*next)->getType() != TOKEN_TYPE::t_eol){
                     throw ExceptionUnknownInstruction("mul should be followed by an EOL");
                 }
-                if (stack.size() >= 2)
+                if (stack->size() >= 2)
                 {
-                    auto val1 = stack.top();
-                    stack.pop();
-                    auto val2 = stack.top();
-                    stack.pop();
+                    auto val1 = stack->top();
+                    stack->pop();
+                    auto val2 = stack->top();
+                    stack->pop();
 
                     auto result = *val1 * *val2;
-                    stack.push(const_cast<IOperand*>(result));
+                    stack->push(const_cast<IOperand*>(result));
                 }
                 else 
                 {
@@ -326,15 +327,15 @@ try {
                     throw ExceptionUnknownInstruction("div should be followed by an EOL");
                 }
 
-                if (stack.size() >= 2)
+                if (stack->size() >= 2)
                 {
-                    auto val1 = stack.top();
-                    stack.pop();
-                    auto val2 = stack.top();
-                    stack.pop();
+                    auto val1 = stack->top();
+                    stack->pop();
+                    auto val2 = stack->top();
+                    stack->pop();
 
                     auto result = *val2 / *val1;
-                    stack.push(const_cast<IOperand*>(result));
+                    stack->push(const_cast<IOperand*>(result));
                 }
                 else 
                 {
@@ -348,15 +349,15 @@ try {
                     throw ExceptionUnknownInstruction("mod should be followed by an EOL");
                 }
 
-                if (stack.size() >= 2)
+                if (stack->size() >= 2)
                 {
-                    auto val1 = stack.top();
-                    stack.pop();
-                    auto val2 = stack.top();
-                    stack.pop();
+                    auto val1 = stack->top();
+                    stack->pop();
+                    auto val2 = stack->top();
+                    stack->pop();
 
                     auto result = *val1 % *val2;
-                    stack.push(const_cast<IOperand*>(result));
+                    stack->push(const_cast<IOperand*>(result));
                 }
                 else 
                 {
@@ -378,15 +379,15 @@ try {
                     throw ExceptionUnknownInstruction("pop should be followed by an EOL");
                 }
 
-                if (stack.empty()){
+                if (stack->empty()){
                     throw ExceptionPopOnEmptyStack();
                 }
 
-                stack.pop();
+                stack->pop();
             }
             else if ((*itt)->getValue() == "print")
             {
-                auto val1 = stack.top();
+                auto val1 = stack->top();
                 if (val1->getType() == eOperandType::t_int8){
                     std::cout << char(std::stoi(val1->toString()));
                 }
@@ -440,7 +441,7 @@ try {
                         }                        
                     }
 
-                    auto val1 = stack.top();
+                    auto val1 = stack->top();
                     // PDF is unclear if operand type should be checked, if this is the case use this:
                     // if (op->toString() != val1->toString()|| op->getType() != val1->getType())
                     if (op->toString() != val1->toString())
@@ -469,4 +470,25 @@ catch (std::exception &e)
 {
     std::cout << "Exception raised: "<< e.what() << std::endl;
 }
+}
+
+Parser  & Parser::operator=(const Parser & _rhs)
+{
+    stack = _rhs.stack;
+    return (*this);
+}
+
+Parser::Parser (const Parser  & _op)
+{
+    stack = _op.stack;
+}
+
+Parser::Parser()
+{
+
+}
+
+Parser::~Parser()
+{
+
 }
