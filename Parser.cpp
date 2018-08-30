@@ -145,15 +145,15 @@ bool Parser::isValidFloat(std::list<Token*>::iterator &itt)
 
 void Parser::printStack()
 {
-    auto stackCopy = stack;
+    std::stack<IOperand*> stackCopy = *stack;
     int i = 0;
 
-    while (stackCopy->size() > 0)
+    while (stackCopy.size() > 0)
     {
-        auto ptr = stackCopy->top();
+        auto ptr = stackCopy.top();
 
             std::cout << "STACK[" << i << "]" << ptr->toString() << std::endl; 
-        stackCopy->pop();
+        stackCopy.pop();
         i++;
     }
 

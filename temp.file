@@ -1,4 +1,4 @@
 push int32(10)
-push int8(20)
-add
+dump
+push int32(12)
 dump
